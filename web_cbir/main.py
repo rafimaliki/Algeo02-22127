@@ -7,11 +7,6 @@ if os.path.exists(database_folder):
     shutil.rmtree(database_folder)
 os.makedirs(database_folder)
 
-database_folder = 'website/static/result_picture'
-if os.path.exists(database_folder):
-    shutil.rmtree(database_folder)
-os.makedirs(database_folder)
-
 database_folder = 'website/static/submitted_picture'
 if os.path.exists(database_folder):
     shutil.rmtree(database_folder)

@@ -15,7 +15,7 @@
                 <div>
                     <form method="post" enctype="multipart/form-data" action="{{ url_for('views.upload_image') }}">
                         <div class="form-group">
-                            <label for="imageInput">Select Image:</label>
+                            <label for="imageInput">Select image:</label>
                             <input type="file" class="form-control-file" id="imageInput" name="image" accept="image/*" required>
                         </div>
                         <div class="mt-2">
@@ -61,7 +61,7 @@
                 <div class="mt-4">
                     {% if selected_image and len_dataset %}
                         <div class="mt-2">
-                            Select Methods:
+                            Select methods:
                         </div>
                         <div class="mt-2">
                             <form method="post" action="{{ url_for('views.cbir_color') }}" class="d-inline mr-1">
@@ -81,17 +81,18 @@
         {% if result_images %}
             <div class="row">
                 <div class="col-6">
-                    <p class="mb-4">CBIR Results</p>
+                    <p class="mb-4">Results : {{ len_result }} pictures found</p>
                 </div>
                 <div class="col-6 text-right">
                     <p>Runtime {{runtime}}</p>
                 </div>
             </div>
             
-            <div class="row row-cols-1 row-cols-md-3">
+            <div class="row row-cols-1 row-cols-md-3 d-flex justify-content-center">
                 {% for image in result_images %}
-                    <div class="col mb-4">
-                        <img src="{{ url_for('static', filename='result_picture/' + image) }}" alt="{{ image }}" class="img-fluid rounded">
+                    <div class="col mb-4 text-center">
+                        <img src="{{ url_for('static', filename='database_picture/' + image[0]) }}" alt="{{ image }}" class="img-fluid rounded" style="max-width: 100%; max-height: 200px;">
+                        <p> {{image[1]}}% </p>
                     </div>
                 {% endfor %}
             </div>

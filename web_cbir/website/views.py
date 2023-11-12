@@ -4,10 +4,14 @@ from flask import Blueprint, render_template, request, redirect, url_for
 
 views = Blueprint('views', __name__)
 runtime = 0
+result_images = []
 
 def get_result_images():
-    result_folder = 'website/static/result_picture'
-    result_images = [image for image in os.listdir(result_folder) if image.endswith(('.png', '.jpg', '.jpeg'))]
+    import random, os
+    global result_images
+    result_folder = 'website/static/database_picture'
+    result_images = [[image, random.randint(80, 95)] for image in os.listdir(result_folder) if image.endswith(('.png', '.jpg', '.jpeg'))]
+    result_images = sorted(result_images, key=lambda x: x[1], reverse=True)
     return result_images
 
 @views.route('/', methods=['GET', 'POST'])
@@ -24,8 +28,8 @@ def home():
     selected_image = 'submitted_image.png' if os.path.exists(image_path) else None
     len_dataset = len(os.listdir('website/static/database_picture'))
 
-    # Get result images
-    result_images = get_result_images()
+    # Get len result images
+    len_result = len(result_images)
 
     # Pagination
     images_per_page = 5
@@ -36,7 +40,7 @@ def home():
     end_index = start_index + images_per_page
     paginated_images = result_images[start_index:end_index]
 
-    return render_template("home.html", selected_image=selected_image, len_dataset=len_dataset, result_images=paginated_images, total_pages=total_pages, current_page=current_page, runtime=runtime)
+    return render_template("home.html", selected_image=selected_image, len_dataset=len_dataset, result_images=paginated_images, total_pages=total_pages, current_page=current_page, runtime=runtime, len_result=len_result)
 
 @views.route('/upload_image', methods=['POST'])
 def upload_image():
@@ -70,6 +74,8 @@ def upload_database_images():
 
 @views.route('/delete_all_dataset_images', methods=['POST'])
 def delete_all_dataset_images():
+    global result_images
+    result_images = []
     database_folder = 'website/static/database_picture'
     if os.path.exists(database_folder):
         shutil.rmtree(database_folder)
@@ -78,7 +84,15 @@ def delete_all_dataset_images():
 
 @views.route('/cbir_color', methods=['POST'])
 def cbir_color():
-    print("TRIGGER FUNCTION: CBIR Metode Color")
+
+    global runtime
+    runtime = time.time()
+
+    print("TRIGGER FUNCTION: CBIR Metode Tekstur")
+    get_result_images() 
+    
+    runtime = f"{round(time.time() - runtime,3)} s"
+
     return redirect(url_for('views.home'))
 
 @views.route('/cbir_texture', methods=['POST'])
@@ -86,28 +100,10 @@ def cbir_texture():
 
     global runtime
     runtime = time.time()
-    
+
     print("TRIGGER FUNCTION: CBIR Metode Tekstur")
-
-    def copy_images(source_folder, destination_folder, image_filenames):
-        for image_filename in image_filenames:
-            source_path = os.path.join(source_folder, image_filename)
-            destination_path = os.path.join(destination_folder, image_filename)
-
-            try:
-                shutil.copy2(source_path, destination_path)
-                print(f"Image '{image_filename}' copied successfully.")
-            except FileNotFoundError:
-                print(f"Error: Image '{image_filename}' not found.")
-            except Exception as e:
-                print(f"Error: {e}")
-
-    # Example usage:
-    source_folder = "../dataset"
-    destination_folder = "website/static/result_picture"
-    image_filenames_to_copy = [f"{i}.jpg" for i in range(30)]
-    copy_images(source_folder, destination_folder, image_filenames_to_copy)
-
+    get_result_images()
+    
     runtime = f"{round(time.time() - runtime,3)} s"
 
     return redirect(url_for('views.home'))
