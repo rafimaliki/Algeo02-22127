@@ -15,7 +15,7 @@ def glcm(input):
     distance = 1
     angle = 0  # 0 derajat (horizontal)
 
-    # Mendapatkan dimensi citra
+    # Mendapatkan dimensi
     height, width = image.size
 
     # Membuat GLCM
@@ -32,8 +32,7 @@ def glcm(input):
             # Koordinat piksel dalam arah yang diinginkan (misalnya, horizontal)
             neighbor_pixel = image[i, j + distance][0] if angle == 0 else None
 
-            # Pastikan tetap dalam batas level
-            
+
             glcm[current_pixel, neighbor_pixel] += 1
 
     transpose_glcm = np.transpose(glcm)
