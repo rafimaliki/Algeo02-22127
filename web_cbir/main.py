@@ -2,15 +2,15 @@ from website import create_app
 import os, shutil
 
 # Clear all images from folder
-database_folder = 'website/static/database_picture'
-if os.path.exists(database_folder):
-    shutil.rmtree(database_folder)
-os.makedirs(database_folder)
+folder = 'website/static/dataset_picture'
+if os.path.exists(folder):
+    shutil.rmtree(folder)
+os.makedirs(folder)
 
-database_folder = 'website/static/submitted_picture'
-if os.path.exists(database_folder):
-    shutil.rmtree(database_folder)
-os.makedirs(database_folder)
+folder = 'website/static/submitted_picture'
+if os.path.exists(folder):
+    shutil.rmtree(folder)
+os.makedirs(folder)
 
 app = create_app()
 

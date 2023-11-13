@@ -7,17 +7,16 @@ runtime = 0
 result_images = []
 
 def get_result_images():
-    import random, os
+    import random, os, time
     global result_images
-    result_folder = 'website/static/database_picture'
+    time.sleep(1.2)
+    result_folder = 'website/static/dataset_picture'
     result_images = [[image, random.randint(80, 95)] for image in os.listdir(result_folder) if image.endswith(('.png', '.jpg', '.jpeg'))]
     result_images = sorted(result_images, key=lambda x: x[1], reverse=True)
     return result_images
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-
-    print("runtime:",runtime)
 
     image_path = os.path.join('website/static/submitted_picture', 'submitted_image.png')
 
@@ -26,14 +25,14 @@ def home():
             os.remove(image_path)
 
     selected_image = 'submitted_image.png' if os.path.exists(image_path) else None
-    len_dataset = len(os.listdir('website/static/database_picture'))
+    len_dataset = len(os.listdir('website/static/dataset_picture'))
 
     # Get len result images
     len_result = len(result_images)
 
     # Pagination
     images_per_page = 5
-    total_pages = (len(result_images) + images_per_page - 1) // images_per_page
+    total_pages = (len(result_images) // images_per_page ) + 1 
     current_page = int(request.args.get('page', 1))
 
     start_index = (current_page - 1) * images_per_page
@@ -49,7 +48,7 @@ def upload_image():
         image.save(os.path.join('website/static/submitted_picture', 'submitted_image.png'))
     return redirect(url_for('views.home'))
 
-@views.route('/delete_image', methods=['POST'])
+@views.route('/delete_image', methods=['GET','POST'])
 def delete_image():
     image_path = os.path.join('website/static/submitted_picture', 'submitted_image.png')
     if os.path.exists(image_path):
@@ -59,7 +58,7 @@ def delete_image():
 @views.route('/upload_database_images', methods=['POST'])
 def upload_database_images():
     # Clear existing images in the database_picture folder
-    database_folder = 'website/static/database_picture'
+    database_folder = 'website/static/dataset_picture'
     if os.path.exists(database_folder):
         shutil.rmtree(database_folder)
     os.makedirs(database_folder)
@@ -72,11 +71,11 @@ def upload_database_images():
 
     return redirect(url_for('views.home'))
 
-@views.route('/delete_all_dataset_images', methods=['POST'])
+@views.route('/delete_all_dataset_images', methods=['GET','POST'])
 def delete_all_dataset_images():
     global result_images
     result_images = []
-    database_folder = 'website/static/database_picture'
+    database_folder = 'website/static/dataset_picture'
     if os.path.exists(database_folder):
         shutil.rmtree(database_folder)
         os.makedirs(database_folder)
@@ -89,7 +88,7 @@ def cbir_color():
     runtime = time.time()
 
     print("TRIGGER FUNCTION: CBIR Metode Tekstur")
-    get_result_images() 
+    result_images = get_result_images() 
     
     runtime = f"{round(time.time() - runtime,3)} s"
 
@@ -102,7 +101,7 @@ def cbir_texture():
     runtime = time.time()
 
     print("TRIGGER FUNCTION: CBIR Metode Tekstur")
-    get_result_images()
+    result_images = get_result_images()
     
     runtime = f"{round(time.time() - runtime,3)} s"
 
