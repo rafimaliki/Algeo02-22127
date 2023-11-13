@@ -2,16 +2,20 @@
 {% block content %}
 
 
-    <div class="rounded border p-3 mt-4">
+    <div class="shadow rounded border p-3 mt-4">
         <div class="row">
 
             {% if selected_image %}
-            <div class="col-md-auto">
+            <div class="col-md-6 d-flex justify-content-end">
                     <img src="{{ url_for('static', filename='submitted_picture/' + selected_image) }}" alt="{{ selected_image }}" class="img-fluid rounded" style="width:400px">
+            </div>
+            {% else %}
+            <div class="col-md-6 d-flex justify-content-end">
+                <img src="static/empty.png" class="img-fluid rounded" style="width:400px">
             </div>
             {% endif %}
 
-            <div class="col-md-auto">
+            <div class="col-md-6">
 
                 <div>
                     <form id="imageForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_image') }}">
@@ -43,7 +47,7 @@
                             {% endif %}
                         </div>
                         {% if len_dataset %}
-                        <p>{{ len_dataset }} images chosen</p>
+                        <p>{{ len_dataset }} image{% if len_dataset > 1 %}s{% endif %} chosen</p>
                         {% endif %} 
                     </form>
                 </div>
@@ -81,15 +85,15 @@
     {% if selected_image and len_dataset and selected_method %}
     <div class="mt-4 d-flex justify-content-center">
         <form method="post" action="{{ url_for('page_userinput.run_search') }}" class="d-inline mr-1">
-            <button type="submit" class="btn btn-outline-light" style="border-color:rgb(211, 211, 211) ; width:400px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">SEARCH</button>
+            <button type="submit" class="shadow btn btn-outline-light" style="border-color:rgb(211, 211, 211) ; width:400px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">SEARCH</button>
         </form>
     </div>
     {% endif %}
 
-    <div class="rounded border p-3 mt-4">
+    <div class="shadow rounded border p-3 my-4">
         {% if result_images %}
-            <div class="row col-6">
-                <p class="mb-4">{{ len_result }} pictures found in {{ runtime }}sec</p>
+            <div class="row col-6 mb-0 pb-0">
+                <p class="mb-4">{{ len_result }} image{% if len_dataset > 1 %}s{% endif %} found in {{ runtime }}sec</p>
             </div>
             
             <div class="row row-cols-1 row-cols-md-3 d-flex justify-content-center">

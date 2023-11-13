@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>{% block title %}CBIR: ZilongHyper{% endblock %}</title>
-    <link rel="icon" type="image/png" href="static/logovd.png">
+    <link rel="icon" type="image/png" href="static/logo.png">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,20 +22,20 @@
 </head>
 <body>
 
-  <div class="container mt-5">
-    <nav class="rounded navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container mt-3">
+    <nav class="shadow py-30 bg-white rounded navbar navbar-expand-lg navbar-light bg-light sticky-top">
       <div class="container px-0">
         <div class="mr-10" style="width:60px">
           <img src="/static/logo.png" style="width:40px">
         </div>
-        <a class="navbar-brand mr-0" href="#">ZilongHyper</a>
+        <a class="navbar-brand mr-0" href="">ZilongHyper</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto d-flex align-items-center">
             <a class="nav-item nav-link" href="{{ url_for('page_userinput.home') }}" {% if request.path == "/userinput" %} style="font-weight: bold"{% endif %} >User Input</a>
-            <a class="nav-item nav-link" href="{{ url_for('page_camera.home') }}" {% if request.path == "/camera" %} style="font-weight: bold"{% endif %} >Camera</a>
+            <a class="nav-item nav-link" href="{{ url_for('page_camerainput.home') }}" {% if request.path == "/camerainput" %} style="font-weight: bold"{% endif %} >Camera Input</a>
             <a class="nav-item nav-link" href="{{ url_for('page_webscraping.home') }}" {% if request.path == "/webscraping" %} style="font-weight: bold"{% endif %} >Web Scraping</a>
             <a class="nav-item nav-link" href="{{ url_for('page_about.home') }}" {% if request.path == "/" %} style="font-weight: bold"{% endif %} >About</a>
           </div>
@@ -43,7 +43,7 @@
       </div>
     </nav>
 
-    <h1 class="text-center pt-3">Content Based Information Retrieval</h1>
+    <h1 class="text-center pt-3 mt-2" style="font-weight: bold">Content Based Information Retrieval</h1>
     
     {% block content %}{% endblock %}
   </div>
