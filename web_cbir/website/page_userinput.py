@@ -6,6 +6,7 @@ page_userinput = Blueprint('page_userinput', __name__)
 runtime = 0
 result_images = []
 selected_method = 0
+scroll_position = 0
 
 def get_result_images():
     import random, os, time
@@ -40,8 +41,6 @@ def home():
     end_index = start_index + images_per_page
     paginated_images = result_images[start_index:end_index]
 
-    scroll_position = request.args.get('scroll_position', type=int, default=0)
-
     return render_template("page_userinput.html", selected_image=selected_image, 
                                                   len_dataset=len_dataset, 
                                                   result_images=paginated_images, 
@@ -49,8 +48,7 @@ def home():
                                                   current_page=current_page, 
                                                   runtime=runtime, 
                                                   len_result=len_result,
-                                                  selected_method=selected_method,
-                                                  scroll_position=scroll_position)
+                                                  selected_method=selected_method)
 
 @page_userinput.route('/upload_image', methods=['POST'])
 def upload_image():
@@ -86,6 +84,7 @@ def upload_dataset_images():
 
 @page_userinput.route('/delete_all_dataset_images', methods=['GET','POST'])
 def delete_all_dataset_images():
+
     global result_images
     result_images = []
     database_folder = 'website/static/dataset_picture'
@@ -114,7 +113,7 @@ def cbir_texture():
 
 @page_userinput.route('/run_search', methods=['POST'])
 def run_search():
-
+    
     global runtime
     runtime = time.time()
 

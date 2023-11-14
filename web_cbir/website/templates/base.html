@@ -26,18 +26,19 @@
     <nav class="shadow py-30 bg-white rounded navbar navbar-expand-lg navbar-light bg-light sticky-top">
       <div class="container px-0">
         <div class="mr-10" style="width:60px">
-          <img src="/static/logo.png" style="width:40px">
+          <img src="/static/logo.png"  href="{{ url_for('page_home.home') }}" style="width:40px">
         </div>
-        <a class="navbar-brand mr-0" href="">ZilongHyper</a>
+        <a class="navbar-brand mr-0" href="{{ url_for('page_home.home') }}">ZilongHyper</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto d-flex align-items-center">
+            <a class="nav-item nav-link" href="{{ url_for('page_home.home') }}" {% if request.path == "/" %} style="font-weight: bold"{% endif %} >Home</a>
             <a class="nav-item nav-link" href="{{ url_for('page_userinput.home') }}" {% if request.path == "/userinput" %} style="font-weight: bold"{% endif %} >User Input</a>
             <a class="nav-item nav-link" href="{{ url_for('page_camerainput.home') }}" {% if request.path == "/camerainput" %} style="font-weight: bold"{% endif %} >Camera Input</a>
             <a class="nav-item nav-link" href="{{ url_for('page_webscraping.home') }}" {% if request.path == "/webscraping" %} style="font-weight: bold"{% endif %} >Web Scraping</a>
-            <a class="nav-item nav-link" href="{{ url_for('page_about.home') }}" {% if request.path == "/" %} style="font-weight: bold"{% endif %} >About</a>
+            <a class="nav-item nav-link" href="{{ url_for('page_aboutus.home') }}" {% if request.path == "/aboutus" %} style="font-weight: bold"{% endif %} >About Us</a>
           </div>
         </div>
       </div>
@@ -46,7 +47,15 @@
     <h1 class="text-center pt-3 mt-2" style="font-weight: bold">Content Based Information Retrieval</h1>
     
     {% block content %}{% endblock %}
+
   </div>
+
+    <script>
+      window.addEventListener('load', function() {
+        window.scrollTo(0, scroll_position);
+      });
+    </script>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script 
@@ -64,17 +73,6 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
       crossorigin="anonymous">
     </script>
-    <script>
-      // Get the scroll position from local storage
-      var scrollPosition = localStorage.getItem('scrollPosition') || 0;
 
-      // Set the scroll position
-      window.scrollTo(0, scrollPosition);
-
-      // Store the scroll position in local storage when the page is scrolled
-      window.addEventListener('scroll', function() {
-          localStorage.setItem('scrollPosition', window.scrollY);
-      });
-  </script>
 </body>
 </html>
