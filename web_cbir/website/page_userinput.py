@@ -1,7 +1,6 @@
 import os, shutil, time
-import Texture
+from .Texture import get_result_images_texture
 from flask import Blueprint, render_template, request, redirect, url_for
-# from website import get_result_images
 
 page_userinput = Blueprint('page_userinput', __name__)
 runtime = 0
@@ -21,6 +20,7 @@ def get_result_images():
 @page_userinput.route('/userinput', methods=['GET', 'POST'])
 def home():
 
+    print(result_images)
     image_path = os.path.join('website/static/submitted_picture', 'submitted_image.png')
 
     if request.method == 'POST':
@@ -118,11 +118,14 @@ def run_search():
     global runtime
     runtime = time.time()
 
+    global result_images
+
     if selected_method == "color":
         runtime = float(time.time())
 
         print("TRIGGER FUNCTION: CBIR Metode Color")
         result_images = get_result_images() 
+        print(result_images)
     
         runtime = f"{round(float(time.time()) - float(runtime),3)}"
 
@@ -130,7 +133,7 @@ def run_search():
         runtime = float(time.time())
 
         print("TRIGGER FUNCTION: CBIR Metode Tekstur")
-        result_images = Texture.get_result_images()
+        result_images = get_result_images_texture()
     
         runtime = f"{round(float(time.time()) - float(runtime),3)}"
 

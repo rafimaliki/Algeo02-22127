@@ -3,6 +3,8 @@ import os
 import math
 from PIL import Image
 
+
+
 def convert_to_grayscale (input_path):
     # Open the image
     image = Image.open(input_path).convert("RGB")
@@ -51,7 +53,7 @@ def cosineSim(vektorA , vektorB):
         bawahA += vektorA[i]*vektorA[i]
         bawahB += vektorB[i]*vektorB[i]
     cosine = atas / (math.sqrt(bawahA) * math.sqrt(bawahB))
-    return round(cosine, 4)
+    return round(cosine, 2)
 
 
 def get_result_images_texture():
@@ -66,10 +68,10 @@ def get_result_images_texture():
 
     # kalkulasi similarity
     input_glcm = glcm(convert_to_grayscale(submit_path[0]))
-    similarities = [[os.path.basename(path), similarity_value] for path, similarity_value in zip(dataset_paths, [cosineSim(input_glcm, glcm(convert_to_grayscale(path))) * 100 for path in dataset_paths]) if similarity_value > 60]
-    similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
+    similarities = [(similarity_value, os.path.basename(path)) for path, similarity_value in zip(dataset_paths, [cosineSim(input_glcm, glcm(convert_to_grayscale(path))) * 100 for path in dataset_paths]) if similarity_value > 60]
+    similarities.sort(reverse=True, key=lambda x: x[0])
 
     return similarities
 
-# path = get_result_images_texture()
-# print(path)
+path = get_result_images_texture()
+print(path)
