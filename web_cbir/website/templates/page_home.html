@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p class="d-flex justify-content-center">Home page</p>
+
+<div class="text-justify">
+    Content-Based Image Retrieval (CBIR) adalah sebuah proses yang digunakan untuk mencari dan mengambil gambar berdasarkan kontennya. 
+    Proses ini dimulai dengan ekstraksi fitur-fitur penting dari gambar, seperti warna, tekstur, dan bentuk. Setelah fitur-fitur tersebut 
+    diekstraksi, mereka diwakili dalam bentuk vektor atau deskripsi numerik yang dapat dibandingkan dengan gambar lain. 
+    Kemudian, CBIR menggunakan algoritma pencocokan untuk membandingkan vektor-fitur dari gambar yang dicari dengan vektor-fitur gambar 
+    dalam dataset. Hasil dari pencocokan ini digunakan untuk mengurutkan gambar-gambar dalam dataset dan menampilkan gambar yang paling 
+    mirip dengan gambar yang dicari. Proses CBIR membantu pengguna dalam mengakses dan mengeksplorasi koleksi gambar dengan cara yang 
+    lebih efisien, karena tidak memerlukan pencarian berdasarkan teks atau kata kunci, melainkan berdasarkan kesamaan nilai citra visual 
+    antara gambar-gambar tersebut.
+</div>
+
+<h5 style="margin-top:30px">
+    CBIR dengan parameter warna
+</h5>  
+
+
+<div class="text-justify">
+    Pada CBIR kali ini akan dibandingkan input dari sebuah image dengan image yang dimiliki oleh dataset, hal ini dilakukan dengan cara
+    mengubah image yang berbentuk RGB menjadi sebuah metode histogram warna yang lebih umum.
+	Histogram warna adalah frekuensi dari berbagai warna yang ada pada ruang warna tertentu hal ini dilakukan untuk melakukan pendistribusian
+    warna dari image. Histogram warna tidak bisa mendeteksi sebuah objek yang spesifik yang terdapat pada image dan tidak bisa mendeskripsikan 
+    posisi dari warna yang didistribusikan. Pembentukan ruang warna perlu dilakukan dalam rangka pembagian nilai citra menjadi beberapa range 
+    yang lebih kecil. Hal itu dilakukan untuk membuat sebuah histogram warna yang setiap interval tiap range dianggap sebagai bin. Histogram 
+    warna dapat dihitung dengan menghitung piksel yang menyatakan nilai warna pada setiap interval. Fitur warna mencakup histogram warna global 
+    dan histogram warna blok.
+</div>
+
+<h5 style="margin-top:30px">
+    CBIR dengan parameter tekstur
+</h5>
+
+<div class="text-justify">
+    CBIR dengan parameter tekstur melibatkan perbandingan gambar berdasarkan teksturnya, menggunakan matriks co-occurrence. Matriks ini 
+    memudahkan pemrosesan dan menghasilkan vektor dengan ukuran lebih kecil. Proses ini melibatkan rumus matematika yang melibatkan intensitas 
+    gambar dan parameter offset. Nilai-nilai seperti θ (0°, 45°, 90°, 135°) digunakan untuk menggambarkan arah dan jarak. Setelah mendapatkan 
+    co-occurrence matrix, langkah berikutnya adalah membuat matriks simetris dan mencari normalisasi matriks.
+</div>
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="shadow rounded border p-3 mt-4">
+        <div class="row">
+
+            {% if selected_image %}
+            <div class="col-md-6 d-flex justify-content-end">
+                    <img src="{{ url_for('static', filename='submitted_picture/' + selected_image) }}" alt="{{ selected_image }}" class="img-fluid rounded" style="width:400px">
+            </div>
+            {% else %}
+            <div class="col-md-6 d-flex justify-content-end">
+                <img src="static/empty.png" class="img-fluid rounded" style="width:400px">
+            </div>
+            {% endif %}
+
+            <div class="col-md-6">
+
+                <div>
+                    <form id="imageForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_image') }}">
+                        <div class="form-group">
+                            <label for="imageInput">Select image:</label>
+                            <input type="file" class="form-control-file" id="imageInput" name="image" accept="image/*" required>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-success mr-1" style="width:135px">Upload</button>
+
+                            {% if selected_image %}
+                                <a href="{{ url_for('page_userinput.delete_image') }}" class="btn btn-danger" style="width: 135px">Delete dataset</a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <form id="datasetForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_dataset_images') }}">
+                        <div class="form-group mt-3">
+                            <label for="datasetInput">Select dataset:</label>
+                            <input type="file" class="form-control-file" id="datasetInput" name="images[]" accept="image/*" multiple required>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-success mr-1" style="width:135px">Upload dataset</button>
+                            
+                            {% if len_dataset %}
+                                <a href="{{ url_for('page_userinput.delete_all_dataset_images') }}" class="btn btn-danger" style="width: 135px">Delete dataset</a>
+                            {% endif %}
+                        </div>
+                        {% if len_dataset %}
+                        <p>{{ len_dataset }} image{% if len_dataset > 1 %}s{% endif %} chosen</p>
+                        {% endif %} 
+                    </form>
+                </div>
+
+                <div class="mt-4">
+                    {% if selected_image and len_dataset %}
+                        <div class="mt-2">
+                            Select methods:
+                        </div>
+                        <div class="mt-2">
+                            <form method="post" action="{{ url_for('page_userinput.cbir_color') }}" class="d-inline mr-1">
+                                <button type="submit" class="btn btn-primary" style="width:135px">CBIR Color</button>
+                            </form>
+                            <form method="post" action="{{ url_for('page_userinput.cbir_texture') }}" class="d-inline">
+                                <button type="submit" class="btn btn-primary" style="width:135px">CBIR Texture</button>
+                            </form>
+                        </div>
+                        {% if selected_method == "color" %}
+                        <div class="mt-2">
+                            CBIR Color selected
+                        </div>
+                        {% endif %}
+                        {% if selected_method == "texture" %}
+                        <div class="mt-2">
+                            CBIR Texture selected
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% if selected_image and len_dataset and selected_method %}
+    <div class="mt-4 d-flex justify-content-center">
+        <form method="post" action="{{ url_for('page_userinput.run_search') }}" class="d-inline mr-1">
+            <button type="submit" class="shadow btn btn-outline-light" style="border-color:rgb(211, 211, 211) ; width:400px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">SEARCH</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="shadow rounded border p-3 my-4">
+        {% if result_images %}
+            <div class="row col-6 mb-0 pb-0">
+                <p class="mb-4">{{ len_result }} image{% if len_dataset > 1 %}s{% endif %} found in {{ runtime }}sec</p>
+            </div>
+            
+            <div class="row row-cols-1 row-cols-md-3 d-flex justify-content-center">
+                {% for image in result_images %}
+                    <div class="col mb-4 text-center">
+                        <img src="{{ url_for('static', filename='dataset_picture/' + image[0]) }}" alt="{{ image }}" class="img-fluid rounded" style="max-width: 100%; max-height: 200px;">
+                        <p> {{image[1]}}% </p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <nav aria-label="navbar">
+                <ul class="pagination justify-content-center">
+                    {% for page_num in range(1, total_pages + 1) %}
+                        <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('page_userinput.home', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% else %}
+            <p class="mb-0">No results available.</p>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}
