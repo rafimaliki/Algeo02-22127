@@ -1,4 +1,5 @@
 import os, shutil, time
+import Texture
 from flask import Blueprint, render_template, request, redirect, url_for
 # from website import get_result_images
 
@@ -129,7 +130,7 @@ def run_search():
         runtime = float(time.time())
 
         print("TRIGGER FUNCTION: CBIR Metode Tekstur")
-        result_images = get_result_images()
+        result_images = Texture.get_result_images()
     
         runtime = f"{round(float(time.time()) - float(runtime),3)}"
 
