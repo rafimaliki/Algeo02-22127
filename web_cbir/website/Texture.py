@@ -3,6 +3,8 @@ import os
 import math
 from PIL import Image
 
+
+
 def convert_to_grayscale (input_path):
     # Open the image
     image = Image.open(input_path).convert("RGB")
@@ -56,10 +58,12 @@ def cosineSim(vektorA , vektorB):
 
 def get_result_images():
     current_folder = os.path.dirname(os.path.abspath(__file__))
-    folder_name = 'foto'
+    folder_name = 'static/dataset_picture'
+    input_name = 'static/submitted_picture'
+    input_path = os.path.join(current_folder, input_name)
     folder_path = os.path.join(current_folder, folder_name)
     dataset_paths = [os.path.join(folder_path, file) for file in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, file))]
-    input_path = os.path.join(current_folder, 'inp.jpg')
+    dataset_paths = [os.path.join(input_path, file) for file in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, file))]
 
     # kalkulasi similarity
     input_glcm = glcm(convert_to_grayscale(input_path))
