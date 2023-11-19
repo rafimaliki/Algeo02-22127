@@ -1,111 +1,255 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <div class="shadow rounded border p-3 mt-4">
-        <div class="d-flex justify-content-center">
+    <!-- Input Box -->
+    <div class="d-flex row shadow rounded border mt-4 mx-0 justify-content-center">
 
-            {% if selected_image %}
-            <div class="col-md-6 d-flex justify-content-end d-flex justify-content-center">
-                    <img src="{{ url_for('static', filename='submitted_picture/' + selected_image) }}" alt="{{ selected_image }}" class="img-fluid rounded" style="width:400px">
+        <!-- Display Image Box-->
+        <div class="bg-light border rounded mr-4 d-flex align-self-center justify-content-center" style="height: 400px; width: 400px; margin-left: 60px; overflow: hidden;">
+            <div>
+                {% if selected_image %}
+                <img src="{{ url_for('static', filename='submitted_picture/' + selected_image) }}" alt="{{ selected_image }}" class="overlay-image img-fluid rounded" style="width: 100%; height: 100%; max-height: 100%; max-width: 100%; object-fit: contain;">
+                {% endif %}
             </div>
-            {% else %}
-            <div class="col-md-6 d-flex justify-content-end d-flex justify-content-center">
-                <img src="static/empty.png" class="img-fluid rounded" style="width:400px">
+        </div>
+    
+        <!-- Input Button Box -->
+        <div class="col-6 pl-0 mr-10">
+            
+            <!-- Compared Image Input Box -->
+            <div class="border shadow-sm mt-4 mr-5 d-flex text-center justify-content-center align-items-center" style="border-radius: 30px;"> 
+                <div>
+                    <p for="imageInput" class="mt-2 d-flex font-weight-bold justify-content-center">
+                        Image Input
+                    </p>
+                    <form id="imageForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_image') }}">
+                        <div class="form-group mt-3 d-flex ">
+                            <input type="file" class="form-control-file" id="imageInput" name="image" accept="image/*" required>
+                        </div>
+                        <div class="mt-2 mb-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success mr-1" style="width:135px; border-radius:30px">
+                                Upload
+                            </button>
+        
+                            {% if selected_image %}
+                                <a href="{{ url_for('page_userinput.delete_image') }}" class="btn btn-danger" style="width: 135px; border-radius:30px">
+                                    Delete image
+                                </a>
+                            {% else %}
+                                <a class="btn btn-secondary text-white" style="width: 135px; border-radius:30px">
+                                    Delete image
+                                </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
             </div>
-            {% endif %}
-        </div>
-    </div>
+            
+            <!-- Toggle Webscrap Button -->
+            <div class="pt-20 mt-5 mr-5 d-flex text-center justify-content-center align-items-center" style="border-radius: 30px;"">
+                {% if not(isWebScrap) %}
+                <a href="{{ url_for('page_userinput.toggle_webscrap_button') }}" class="btn btn-secondary pl-0 mr-10 text-white" style="width: 275px; border-radius:30px">
+                    Web Scraping : Off
+                </a>
+                {% else %}
+                <a href="{{ url_for('page_userinput.toggle_webscrap_button') }}" class="btn btn-primary pl-0 mr-10 text-white" style="width: 275px; border-radius:30px">
+                    Web Scraping : On
+                </a>
+                {% endif %}
+            </div>
 
-    <div class="shadow rounded border p-3 mt-4">
-        <div>
-            <form id="imageForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_image') }}">
-                <div class="form-group">
-                    <label for="imageInput">Select image:</label>
-                    <input type="file" class="form-control-file" id="imageInput" name="image" accept="image/*" required>
-                </div>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-success mr-1" style="width:135px">Upload</button>
+            <!-- Dataset Input Box -->
+            <div class="border shadow-sm mt-3 mr-5 mb-4 d-flex text-center justify-content-center align-items-center" style="border-radius: 30px;"> 
+                <div>
 
-                    {% if selected_image %}
-                        <a href="{{ url_for('page_userinput.delete_image') }}" class="btn btn-danger" style="width: 135px">Delete dataset</a>
-                    {% endif %}
-                </div>
-            </form>
-        </div>
-        <div>
-            <form id="datasetForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_dataset_images') }}">
-                <div class="form-group mt-3">
-                    <label for="datasetInput">Select dataset:</label>
-                    <input type="file" class="form-control-file" id="datasetInput" name="images[]" accept="image/*" multiple required>
-                </div>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-success mr-1" style="width:135px">Upload dataset</button>
+                    <p class="mt-2 d-flex text-center font-weight-bold justify-content-center">
+                        Dataset Input
+                    </p>
+
+                    <!-- Input From Local -->
+                    {% if not(isWebScrap) %}
+                    <form id="datasetForm" method="post" enctype="multipart/form-data" action="{{ url_for('page_userinput.upload_dataset_images') }}">
+                        <div class="form-group mt-3 d-flex">
+                            <input type="file" class="form-control-file" id="datasetInput" name="images[]" accept="image/*" multiple required>
+                        </div>
+                        <div class="mt-3 mb-3 d-flex justify-content-center align-middle">
+                            <button type="submit" class="btn btn-success mr-1 align-middle" style="width:135px; border-radius:30px">
+                                Upload dataset
+                            </button>
+        
+                            {% if len_dataset %}
+                                <a href="{{ url_for('page_userinput.delete_all_dataset_images') }}" class="btn btn-danger align-middle" style="width: 135px; border-radius:30px">
+                                    Delete dataset
+                                </a>
+                            {% else %}
+                                <a class="btn btn-secondary text-white align-middle" style="width: 135px; border-radius:30px">
+                                    Delete dataset
+                                </a>
+                            {% endif %}
+                        </div>
+                    </form>
+
+                    <!-- Input Webscrap -->
+                    {% else %}
+                    <form class="col" method="post" action="{{ url_for('page_userinput.run_webscrap') }}">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="url" id="link_input" name="link_input" class="form-control form-control-sm py-0" placeholder="https://hololivepro.com/en/" required>
+                            </div>
                     
-                    {% if len_dataset %}
-                        <a href="{{ url_for('page_userinput.delete_all_dataset_images') }}" class="btn btn-danger" style="width: 135px">Delete dataset</a>
+                            <div class="col-4">
+                                <input type="number" id="number_input" name="number_input" class="form-control form-control-sm py-0" min="1" placeholder="1" required>
+                            </div>
+                        </div>
+                    
+                        <div class="mb-0 d-flex justify-content-center" style="margin-top:9px">
+                            <div class="mt-1 mb-3 d-flex justify-content-center align-middle">
+                                <button type="submit" class="btn btn-success mr-1 align-middle" style="width:135px; border-radius:30px">
+                                    Scrap dataset
+                                </button>
+            
+                                {% if len_dataset %}
+                                    <a href="{{ url_for('page_userinput.delete_all_dataset_images') }}" class="btn btn-danger align-middle" style="width: 135px; border-radius:30px">
+                                        Delete dataset
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-secondary text-white align-middle" style="width: 135px; border-radius:30px">
+                                        Delete dataset
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+
                     {% endif %}
                 </div>
-                {% if len_dataset %}
-                <p>{{ len_dataset }} image{% if len_dataset > 1 %}s{% endif %} chosen</p>
-                {% endif %} 
-            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Box Pagination Dataset -->
+    <div class="shadow rounded border p-3 my-4">
+        {% if dataset_images %}
+            <div class="row col-6 mb-0 pb-0">
+                <p class="mb-4">{{ len_dataset }} image{% if len_dataset > 1 %}s{% endif %} available</p>
+            </div>
+            
+            <div class="row row-cols-1 row-cols-md-3 d-flex justify-content-center">
+                {% for image in dataset_images %}
+                <div class="bg-light border rounded mr-4 d-flex align-self-center justify-content-center" style="height: 180px; width: 180px; margin-left: 0px; overflow: hidden;">
+                    <div>
+                        <img src="{{ url_for('static', filename='dataset_picture/' + image) }}" alt="{{ image }}" class="overlay-image img-fluid rounded" style="width: 100%; height: 100%; max-height: 100%; max-width: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+    
+            <nav aria-label="navbar">
+                <ul class="pagination justify-content-center mt-3">
+                    {% for page_num_dataset in range(1, total_pages_dataset + 1) %}
+                        <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% else %}
+            <p class="mb-0">No images available.</p>
+        {% endif %}
+    </div>
+
+    <!-- CBIR Method and Search Box -->
+    {% if selected_image and len_dataset%}
+    <div class="container shadow rounded border p-3 mt-4">
+        <div>       
+            <div class="mt-2 text-center">
+                <form method="post" action="{{ url_for('page_userinput.cbir_color') }}" class="d-inline">
+                    {% if selected_method != "color" %}
+                        <button type="submit" class="btn btn-secondary" style="width:135px; border-radius:30px">
+                            CBIR Color
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary" style="width:135px; border-radius:30px">
+                            CBIR Color
+                        </button>
+                    {% endif %}
+                    </form>
+
+                    <form method="post" action="{{ url_for('page_userinput.cbir_texture') }}" class="d-inline">
+                    {% if selected_method != "texture" %}
+                        <button type="submit" class="btn btn-secondary" style="width:135px; border-radius:30px">
+                            CBIR Texture
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary" style="width:135px; border-radius:30px">
+                            CBIR Texture
+                        </button>
+                    {% endif %}
+                </form>
+            </div>
         </div>
 
-        <div class="mt-4">
-            {% if selected_image and len_dataset %}
-                <div class="mt-2">
-                    Select methods:
-                </div>
-                <div class="mt-2">
-                    <form method="post" action="{{ url_for('page_userinput.cbir_color') }}" class="d-inline mr-1">
-                        <button type="submit" class="btn btn-primary" style="width:135px">CBIR Color</button>
-                    </form>
-                    <form method="post" action="{{ url_for('page_userinput.cbir_texture') }}" class="d-inline">
-                        <button type="submit" class="btn btn-primary" style="width:135px">CBIR Texture</button>
-                    </form>
-                </div>
-                {% if selected_method == "color" %}
-                <div class="mt-2">
-                    CBIR Color selected
-                </div>
-                {% endif %}
-                {% if selected_method == "texture" %}
-                <div class="mt-2">
-                    CBIR Texture selected
-                </div>
-                {% endif %}
+        <div class="mt-3 mb-2 d-flex justify-content-center">
+            {% if selected_method %}
+            <form method="post" action="{{ url_for('page_userinput.run_search') }}" class="d-inline mr-1">
+                <button type="submit" class="btn btn-outline-light" 
+                    style="border-radius:30px; border-color:rgb(211, 211, 211); width: 280px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">
+                    SEARCH 
+                </button>
+            </form>
+            {% else %}
+            <button type="submit" class="btn btn-secondary text-white" 
+                style="border-radius:30px; border-color:rgb(211, 211, 211); width: 280px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">
+                SEARCH
+            </button>
             {% endif %}
         </div>
     </div>
+    {% else %}
 
-    {% if selected_image and len_dataset and selected_method %}
-    <div class="mt-4 d-flex justify-content-center">
-        <form method="post" action="{{ url_for('page_userinput.run_search') }}" class="d-inline mr-1">
-            <button type="submit" class="shadow btn btn-outline-light" style="border-color:rgb(211, 211, 211) ; width:400px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">SEARCH</button>
-        </form>
+    <div class="container shadow rounded border p-3 mt-4">
+        <div>       
+            <div class="mt-2 text-center">
+                <button type="submit" class="btn btn-secondary" style="width:135px; border-radius:30px">CBIR Color</button>
+                <button type="submit" class="btn btn-secondary" style="width:135px; border-radius:30px">CBIR Texture</button>
+            </div>
+        </div>
+
+        <div class="mt-3 mb-2 d-flex justify-content-center">
+            <button type="submit" class="btn btn-secondary text-white" 
+                style="border-radius:30px; border-color:rgb(211, 211, 211); width: 280px; font-size:30px; color:rgb(76, 76, 76); font-weight: bold">
+                SEARCH
+            </button>
+        </div>
     </div>
-    {% endif %}
+    {% endif%}
 
+    <!-- Box Pagination Result -->
     <div class="shadow rounded border p-3 my-4">
         {% if result_images %}
             <div class="row col-6 mb-0 pb-0">
-                <p class="mb-4">{{ len_result }} image{% if len_dataset > 1 %}s{% endif %} found in {{ runtime }}sec</p>
+                <p class="mb-4">{{ len_result }} image{% if len_result > 1 %}s{% endif %} found in {{ runtime }}sec</p>
             </div>
             
             <div class="row row-cols-1 row-cols-md-3 d-flex justify-content-center">
                 {% for image in result_images %}
-                    <div class="col mb-4 text-center">
-                        <img src="{{ url_for('static', filename='dataset_picture/' + image[0]) }}" alt="{{ image }}" class="img-fluid rounded" style="max-width: 100%; max-height: 200px;">
-                        <p> {{image[1]}}% </p>
+                    <div class=" mb-4 text-center">
+                        <div class="bg-light border rounded mr-4 d-flex align-self-center justify-content-center" style="height: 180px; width: 180px; margin-left: 0px; overflow: hidden;">
+                            <div>
+                                <img src="{{ url_for('static', filename='dataset_picture/' + image[0]) }}" alt="{{ image[0] }}" class="overlay-image img-fluid rounded" style="width: 100%; height: 100%; max-height: 100%; max-width: 100%; object-fit: contain;">
+                            </div>
+                        </div>
+                        <p class="mr-4"> {{image[1]}}% </p>
                     </div>
                 {% endfor %}
             </div>
 
             <nav aria-label="navbar">
                 <ul class="pagination justify-content-center">
-                    {% for page_num in range(1, total_pages + 1) %}
-                        <li class="page-item {% if page_num == current_page %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('page_userinput.home', page=page_num) }}">{{ page_num }}</a>
+                    {% for page_num_result in range(1, total_pages_result + 1) %}
+                        <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -114,7 +258,5 @@
             <p class="mb-0">No results available.</p>
         {% endif %}
     </div>
-
-
 
 {% endblock %}

@@ -1,5 +1,8 @@
 import os, shutil, time
-from .Texture import get_result_images_texture
+from .cbir_texture import get_result_images_texture
+from .webscrap import download_images
+from math import ceil
+
 from flask import Blueprint, render_template, request, redirect, url_for
 
 page_userinput = Blueprint('page_userinput', __name__)
@@ -7,6 +10,7 @@ runtime = 0
 result_images = []
 selected_method = 0
 scroll_position = 0
+isWebScrap = False
 
 def get_result_images():
     import random, os, time
@@ -20,7 +24,6 @@ def get_result_images():
 @page_userinput.route('/userinput', methods=['GET', 'POST'])
 def home():
 
-    print(result_images)
     image_path = os.path.join('website/static/submitted_picture', 'submitted_image.png')
 
     if request.method == 'POST':
@@ -29,27 +32,41 @@ def home():
 
     selected_image = 'submitted_image.png' if os.path.exists(image_path) else None
     len_dataset = len(os.listdir('website/static/dataset_picture'))
+    if len_dataset:
+        dataset_images =  [image for image in os.listdir('website/static/dataset_picture') if image.endswith(('.png', '.jpg', '.jpeg'))]
+    else:
+        dataset_images = []
 
     # Get len result images
     len_result = len(result_images)
 
     # Pagination
     images_per_page = 5
-    total_pages = (len(result_images) // images_per_page ) + 1 
-    current_page = int(request.args.get('page', 1))
 
-    start_index = (current_page - 1) * images_per_page
-    end_index = start_index + images_per_page
-    paginated_images = result_images[start_index:end_index]
+    total_pages_result = ceil(len(result_images) // images_per_page )
+    current_page_result = int(request.args.get('page_result', 1))
+    start_index_result = (current_page_result - 1) * images_per_page
+    end_index_result = start_index_result + images_per_page
+    paginated_images_result = result_images[start_index_result:end_index_result]
+
+    total_pages_dataset = ceil(len(dataset_images) // images_per_page )
+    current_page_dataset = int(request.args.get('page_dataset', 1))
+    start_index_dataset = (current_page_dataset - 1) * images_per_page
+    end_index_dataset = start_index_dataset + images_per_page
+    paginated_images_dataset = dataset_images[start_index_dataset:end_index_dataset]
 
     return render_template("page_userinput.html", selected_image=selected_image, 
                                                   len_dataset=len_dataset, 
-                                                  result_images=paginated_images, 
-                                                  total_pages=total_pages, 
-                                                  current_page=current_page, 
+                                                  result_images=paginated_images_result, 
+                                                  total_pages_result=total_pages_result, 
+                                                  current_page_result=current_page_result, 
                                                   runtime=runtime, 
                                                   len_result=len_result,
-                                                  selected_method=selected_method)
+                                                  selected_method=selected_method,
+                                                  isWebScrap=isWebScrap,
+                                                  total_pages_dataset=total_pages_dataset, 
+                                                  current_page_dataset=current_page_dataset, 
+                                                  dataset_images=paginated_images_dataset)
 
 @page_userinput.route('/upload_image', methods=['POST'])
 def upload_image():
@@ -116,8 +133,6 @@ def cbir_texture():
 def run_search():
     
     global runtime
-    runtime = time.time()
-
     global result_images
 
     if selected_method == "color":
@@ -125,16 +140,39 @@ def run_search():
 
         print("TRIGGER FUNCTION: CBIR Metode Color")
         result_images = get_result_images() 
-        print(result_images)
-    
-        runtime = f"{round(float(time.time()) - float(runtime),3)}"
 
+        runtime = f"{round(float(time.time()) - float(runtime),3)}"
+    
     else:
         runtime = float(time.time())
 
         print("TRIGGER FUNCTION: CBIR Metode Tekstur")
         result_images = get_result_images_texture()
-    
+        for image in result_images:
+            image[1] = round(image[1], 2)
+
         runtime = f"{round(float(time.time()) - float(runtime),3)}"
+    
+    return redirect(url_for('page_userinput.home'))
+
+@page_userinput.route('/toggle_webscrap_button', methods=['POST', 'GET'])
+def toggle_webscrap_button():
+
+    global isWebScrap
+    if not(isWebScrap):
+        isWebScrap = True
+    else:
+        isWebScrap = False
+    return redirect(url_for('page_userinput.home'))
+
+@page_userinput.route('/run_webscrap', methods=['POST', 'GET'])
+def run_webscrap():
+
+
+    link_input = request.form['link_input']
+    number_input = int(request.form['number_input'])
+    print("TRIGGER WEBSCRAP")
+
+    download_images(link_input, number_input)
 
     return redirect(url_for('page_userinput.home'))
