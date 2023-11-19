@@ -25,7 +25,7 @@ def glcm(image):
     current_pixels = image_array[:, :-1]
     neighbor_pixels = image_array[:, 1:]
 
-    #Menggunakan NumPy's indexing dan bincount agar kode jauh lebih efisien
+    # Menggunakan NumPy's indexing dan bincount agar kode jauh lebih efisien
     flat_indices = current_pixels * level + neighbor_pixels
     glcm_flat = np.bincount(flat_indices.flatten(), minlength=level**2)
     glcm = glcm_flat.reshape((level, level))

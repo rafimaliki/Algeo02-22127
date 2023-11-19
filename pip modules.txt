@@ -1,7 +1,0 @@
-flask 
-flask-alchemy
-opencv-python
-numpy
-
-request 
-beautiful soup

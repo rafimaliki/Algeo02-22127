@@ -1,44 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
 
-<p class="d-flex justify-content-center">Home page</p>
 
 <div class="text-justify">
-    Content-Based Image Retrieval (CBIR) adalah sebuah proses yang digunakan untuk mencari dan mengambil gambar berdasarkan kontennya. 
-    Proses ini dimulai dengan ekstraksi fitur-fitur penting dari gambar, seperti warna, tekstur, dan bentuk. Setelah fitur-fitur tersebut 
-    diekstraksi, mereka diwakili dalam bentuk vektor atau deskripsi numerik yang dapat dibandingkan dengan gambar lain. 
-    Kemudian, CBIR menggunakan algoritma pencocokan untuk membandingkan vektor-fitur dari gambar yang dicari dengan vektor-fitur gambar 
-    dalam dataset. Hasil dari pencocokan ini digunakan untuk mengurutkan gambar-gambar dalam dataset dan menampilkan gambar yang paling 
-    mirip dengan gambar yang dicari. Proses CBIR membantu pengguna dalam mengakses dan mengeksplorasi koleksi gambar dengan cara yang 
-    lebih efisien, karena tidak memerlukan pencarian berdasarkan teks atau kata kunci, melainkan berdasarkan kesamaan nilai citra visual 
-    antara gambar-gambar tersebut.
+    Content-Based Image Retrieval (CBIR) is a process used to search and retrieve images based on their content. This process starts with the 
+    extraction of important features from the image, such as color, texture, and shape. Once the features are extracted, they are represented 
+    as vectors or numerical descriptions that can be compared with other images. Then, CBIR uses a matching algorithm to compare the features 
+    vectors of the searched image with the features vectors of the images in the dataset. The result of this matching is used to sort the images 
+    in the dataset and display the images that are most similar to the searched image. The CBIR process helps users to access and explore the 
+    image collection in a more efficient way, as it does not require searching by text or keywords, but rather by the similarity of visual image 
+    values between the images.
+
 </div>
 
 <h5 style="margin-top:30px">
-    CBIR dengan parameter warna
+    CBIR with color parameters
 </h5>  
 
 
 <div class="text-justify">
-    Pada CBIR kali ini akan dibandingkan input dari sebuah image dengan image yang dimiliki oleh dataset, hal ini dilakukan dengan cara
-    mengubah image yang berbentuk RGB menjadi sebuah metode histogram warna yang lebih umum.
-	Histogram warna adalah frekuensi dari berbagai warna yang ada pada ruang warna tertentu hal ini dilakukan untuk melakukan pendistribusian
-    warna dari image. Histogram warna tidak bisa mendeteksi sebuah objek yang spesifik yang terdapat pada image dan tidak bisa mendeskripsikan 
-    posisi dari warna yang didistribusikan. Pembentukan ruang warna perlu dilakukan dalam rangka pembagian nilai citra menjadi beberapa range 
-    yang lebih kecil. Hal itu dilakukan untuk membuat sebuah histogram warna yang setiap interval tiap range dianggap sebagai bin. Histogram 
-    warna dapat dihitung dengan menghitung piksel yang menyatakan nilai warna pada setiap interval. Fitur warna mencakup histogram warna global 
-    dan histogram warna blok.
+    In this CBIR, the input of an image will be compared with the image owned by the dataset, this is done by converting the RGB image into a 
+    more general color histogram method. The color histogram is the frequency of various colors in a certain color space, this is done to distribute 
+    the color of the image. The color histogram cannot detect a specific object contained in the image and cannot describe the position of the 
+    distributed colors. The formation of color space needs to be done in order to divide the image value into several smaller ranges. This is done 
+    to create a color histogram where each interval of each range is considered a bin. The color histogram can be calculated by counting the pixels 
+    that express the color values at each interval. Color features include global color histogram and block color histogram.
+
 </div>
 
 <h5 style="margin-top:30px">
-    CBIR dengan parameter tekstur
+    CBIR with texture parameters
 </h5>
 
 <div class="text-justify">
-    CBIR dengan parameter tekstur melibatkan perbandingan gambar berdasarkan teksturnya, menggunakan matriks co-occurrence. Matriks ini 
-    memudahkan pemrosesan dan menghasilkan vektor dengan ukuran lebih kecil. Proses ini melibatkan rumus matematika yang melibatkan intensitas 
-    gambar dan parameter offset. Nilai-nilai seperti θ (0°, 45°, 90°, 135°) digunakan untuk menggambarkan arah dan jarak. Setelah mendapatkan 
-    co-occurrence matrix, langkah berikutnya adalah membuat matriks simetris dan mencari normalisasi matriks.
+    CBIR with texture parameters involves comparing images based on their texture, using a co-occurrence matrix. This matrix facilitates processing 
+    and produces vectors of smaller size. The process involves a mathematical formula involving image intensity and offset parameters. Values such 
+    as θ (0°, 45°, 90°, 135°) are used to describe direction and distance. After obtaining the co-occurrence matrix, the next step is to create a 
+    symmetric matrix and seek matrix normalization.
 </div>
 
 <div class="d-flex justify-content-center mt-4">
