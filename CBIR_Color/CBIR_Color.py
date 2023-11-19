@@ -11,7 +11,9 @@ def RGBNorm(Pict):
     return (np.divide(Pict,255.0))
 
 def subMatrix(matrix,n):
-    return np.reshape(matrix,(n,matrix.shape[0]//n,n,matrix.shape[1]//n,3),order='C')
+    i=matrix.shape[0] % n
+    j=matrix.shape[1] % n
+    return np.reshape(matrix,(n,round((matrix.shape[0]+i)/n),n,round((matrix.shape[1]+j)/n),3),order='C')
 
 def HSV(Pict):
     
