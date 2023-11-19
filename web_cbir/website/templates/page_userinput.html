@@ -147,11 +147,58 @@
     
             <nav aria-label="navbar">
                 <ul class="pagination justify-content-center mt-3">
-                    {% for page_num_dataset in range(1, total_pages_dataset + 1) %}
+                    {% if total_pages_dataset <= 20 %}
+                        {% for page_num_dataset in range(1, total_pages_dataset + 1) %}
+                            <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for page_num_dataset in range(1, 3 + 1) %}
                         <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
                             <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
                         </li>
-                    {% endfor %}
+                        {% endfor %}
+                        
+                        <li class="page-item">
+                            <a class="page-link">...</a>
+                        </li>
+                        {% if (current_page_dataset in [1,2,total_pages_dataset-1,total_pages_dataset] )%}
+                            {% for page_num_dataset in range(1, 3 + 1) %}
+                            <li class="page-item">
+                                <a class="page-link">...</a>
+                            </li>
+                            {% endfor %}
+                        {% elif current_page_dataset == 3 %}
+                            {% for page_num_dataset in range(4, 6+1) %}
+                            <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
+                            </li>
+                            {% endfor %}
+                        {% elif current_page_dataset == total_pages_dataset-2 %}
+                            {% for page_num_dataset in range(total_pages_dataset-5, total_pages_dataset-2) %}
+                            <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            {% for page_num_dataset in range(current_page_dataset-1, current_page_dataset+2) %}
+                            <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                        <li class="page-item">
+                            <a class="page-link">...</a>
+                        </li>
+
+                        {% for page_num_dataset in range(total_pages_dataset-2, total_pages_dataset + 1) %}
+                        <li class="page-item {% if page_num_dataset == current_page_dataset %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('page_userinput.home', page_dataset=page_num_dataset, page_result = current_page_result) }}">{{ page_num_dataset }}</a>
+                        </li>
+                        {% endfor %}
+                        
+                    {% endif %}
                 </ul>
             </nav>
         {% else %}
@@ -246,12 +293,59 @@
             </div>
 
             <nav aria-label="navbar">
-                <ul class="pagination justify-content-center">
-                    {% for page_num_result in range(1, total_pages_result + 1) %}
+                <ul class="pagination justify-content-center mt-3">
+                    {% if total_pages_result <= 20 %}
+                        {% for page_num_result in range(1, total_pages_result + 1) %}
+                            <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for page_num_result in range(1, 3 + 1) %}
                         <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
                             <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
                         </li>
-                    {% endfor %}
+                        {% endfor %}
+                        
+                        <li class="page-item">
+                            <a class="page-link">...</a>
+                        </li>
+                        {% if (current_page_result in [1,2,total_pages_result-1,total_pages_result] )%}
+                            {% for page_num_result in range(1, 3 + 1) %}
+                            <li class="page-item">
+                                <a class="page-link">...</a>
+                            </li>
+                            {% endfor %}
+                        {% elif current_page_result == 3 %}
+                            {% for page_num_result in range(4, 6+1) %}
+                            <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
+                            </li>
+                            {% endfor %}
+                        {% elif current_page_result == total_pages_result-2 %}
+                            {% for page_num_result in range(total_pages_result-5, total_pages_result-2) %}
+                            <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            {% for page_num_result in range(current_page_result-1, current_page_result+2) %}
+                            <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                        <li class="page-item">
+                            <a class="page-link">...</a>
+                        </li>
+            
+                        {% for page_num_result in range(total_pages_result-2, total_pages_result + 1) %}
+                        <li class="page-item {% if page_num_result == current_page_result %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('page_userinput.home', page_result=page_num_result, page_dataset = current_page_dataset) }}">{{ page_num_result }}</a>
+                        </li>
+                        {% endfor %}
+                        
+                    {% endif %}
                 </ul>
             </nav>
         {% else %}
