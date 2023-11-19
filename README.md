@@ -23,9 +23,8 @@ Struktur Folder
 │  │  ├─ function_webscrap.py
 │  │  ├─ page_aboutus.py
 │  │  ├─ page_camerainput.py
-│  │  ├──page_home.py
-│  │  ├─ page_userinput.py
-│  │  └─ function_webscrap.py
+│  │  ├─ page_home.py
+│  │  └─ page_userinput.py
 │  └─ main.py     
 ├─ test\
 └─ README.md
