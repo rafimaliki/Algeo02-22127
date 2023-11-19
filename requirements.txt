@@ -1,6 +1,0 @@
-python modules:
-
-flask 
-numpy
-requests
-beautifulsoup4

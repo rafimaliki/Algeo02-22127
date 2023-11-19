@@ -1,7 +1,7 @@
 import os, shutil, time
-from .cbir_texture import get_result_images_texture
-from .cbir_color import get_result_images_color
-from .webscrap import download_images
+from .function_cbir_texture import get_result_images_texture
+from .function_cbir_color import get_result_images_color
+from .function_webscrap import download_images
 from math import ceil
 
 from flask import Blueprint, render_template, request, redirect, url_for

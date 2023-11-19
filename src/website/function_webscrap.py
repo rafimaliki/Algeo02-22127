@@ -26,6 +26,7 @@ def download_images(url, max_images):
         # Download image
         for img_tag in img_tags:
 
+            # Skip foto pertama karena biasanya logo google
             if google_logo:
                 google_logo = False
                 continue
