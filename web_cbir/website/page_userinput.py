@@ -1,5 +1,6 @@
 import os, shutil, time
 from .cbir_texture import get_result_images_texture
+from .cbir_color import get_result_images_color
 from .webscrap import download_images
 from math import ceil
 
@@ -10,16 +11,7 @@ runtime = 0
 result_images = []
 selected_method = 0
 scroll_position = 0
-isWebScrap = False
-
-def get_result_images():
-    import random, os, time
-    global result_images
-    time.sleep(1.2)
-    result_folder = 'website/static/dataset_picture'
-    result_images = [[image, random.randint(80, 97)+random.randint(0, 9)/10] for image in os.listdir(result_folder) if image.endswith(('.png', '.jpg', '.jpeg'))]
-    result_images = sorted(result_images, key=lambda x: x[1], reverse=True)
-    return result_images
+is_web_scrap = False
 
 @page_userinput.route('/userinput', methods=['GET', 'POST'])
 def home():
@@ -63,7 +55,7 @@ def home():
                                                   runtime=runtime, 
                                                   len_result=len_result,
                                                   selected_method=selected_method,
-                                                  isWebScrap=isWebScrap,
+                                                  isWebScrap=is_web_scrap,
                                                   total_pages_dataset=total_pages_dataset, 
                                                   current_page_dataset=current_page_dataset, 
                                                   dataset_images=paginated_images_dataset)
@@ -139,7 +131,7 @@ def run_search():
         runtime = float(time.time())
 
         print("TRIGGER FUNCTION: CBIR Metode Color")
-        result_images = get_result_images() 
+        result_images = get_result_images_color() 
 
         runtime = f"{round(float(time.time()) - float(runtime),3)}"
     
@@ -158,11 +150,11 @@ def run_search():
 @page_userinput.route('/toggle_webscrap_button', methods=['POST', 'GET'])
 def toggle_webscrap_button():
 
-    global isWebScrap
-    if not(isWebScrap):
-        isWebScrap = True
+    global is_web_scrap
+    if not(is_web_scrap):
+        is_web_scrap = True
     else:
-        isWebScrap = False
+        is_web_scrap = False
     return redirect(url_for('page_userinput.home'))
 
 @page_userinput.route('/run_webscrap', methods=['POST', 'GET'])
