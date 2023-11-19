@@ -2,5 +2,5 @@ python modules:
 
 flask 
 numpy
-request 
+requests
 beautifulsoup4
