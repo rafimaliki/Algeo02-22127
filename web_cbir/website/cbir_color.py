@@ -10,9 +10,6 @@ def RGBNorm(Pict):
     Pict=Pict.astype(np.float32)
     return (np.divide(Pict,255.0))
 
-def subMatrix(matrix,n):
-    return np.reshape(matrix,(n,matrix.shape[0]//n,n,matrix.shape[1]//n,3),order='C')
-
 def HSV(Pict):
     
     red_channel = Pict[:, :, 0]
@@ -100,13 +97,14 @@ def cosineSimAvg(v1,v2):
 def Result(Pict,n):
     Pict=Image.open(Pict).convert("RGB")
     Pict=asarray(Pict)
-    subPict=subMatrix(Pict,n)
     result_array = np.zeros((n*n,14), dtype=np.int64)
+    h=Pict.shape[0]//n
+    w=Pict.shape[1]//n
     nth=0
     for i in range (0,n):
-            for j in range (0,n):
-                result_array[nth]=HSV(subPict[i,:,j,:,:])
-                nth+=1
+        for j in range (0,n):
+            result_array[nth]=HSV(Pict[i*h:h*(i+1)-1, j*w:w*(j+1)-1 ,:])
+            nth+=1
     return result_array
 
 def get_result_images_color():
