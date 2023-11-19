@@ -33,7 +33,7 @@ def home():
     len_result = len(result_images)
 
     # Pagination
-    images_per_page = 1
+    images_per_page = 5
 
     total_pages_result = ceil(len(result_images) // images_per_page )
     current_page_result = int(request.args.get('page_result', 1))
