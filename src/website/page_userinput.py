@@ -29,10 +29,8 @@ def home():
     else:
         dataset_images = []
 
-    # Get len result images
     len_result = len(result_images)
 
-    # Pagination
     images_per_page = 5
 
     total_pages_result = ceil(len(result_images) // images_per_page )
@@ -78,13 +76,12 @@ def delete_image():
 
 @page_userinput.route('/upload_dataset_images', methods=['POST'])
 def upload_dataset_images():
-    # Clear existing images in the database_picture folder
+
     database_folder = 'website/static/dataset_picture'
     if os.path.exists(database_folder):
         shutil.rmtree(database_folder)
     os.makedirs(database_folder)
 
-    # Save the uploaded images to the database_picture folder
     if 'images[]' in request.files:
         images = request.files.getlist('images[]')
         for image in images:

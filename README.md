@@ -27,7 +27,7 @@ py main.py
 # Buka http://127.0.0.1:5000 pada browser
 ```
 
-### Prerequisite
+### Prerequisites
 ```
 # Modul python yang harus diinstal
 pip install Flask

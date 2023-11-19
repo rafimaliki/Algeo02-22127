@@ -36,6 +36,7 @@ def download_images(url, max_images):
 
             try:
 
+                # Cari link dari atribut src
                 img_url = img_tag.get('src')
                 if img_url:
                     
