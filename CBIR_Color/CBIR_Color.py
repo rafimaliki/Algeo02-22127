@@ -5,7 +5,6 @@ import numpy as np
 import os
 
 t1_start = process_time()  
-counter=0
 
 def RGBNorm(Pict):
     Pict=Pict.astype(np.float32)
@@ -96,9 +95,6 @@ def cosineSimAvg(v1,v2):
         vNorm1=np.linalg.norm(v1[i])
         vNorm2=np.linalg.norm(v2[i])
         hasil+=np.divide(vDot,np.multiply(vNorm1,vNorm2))
-    global counter
-    print(counter)
-    counter+=1
     return round(hasil/16,4)
 
 def Result(Pict,n):
